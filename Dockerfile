@@ -11,7 +11,6 @@ RUN go mod download
 
 COPY *.go .
 
-
 RUN go build -o ./out/logger .
 
 FROM alpine
