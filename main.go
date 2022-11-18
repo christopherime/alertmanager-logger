@@ -48,7 +48,7 @@ func main() {
 		var alertManagerMessage AlertManagerNotificationObject
 
 		c.BodyParser(&alertManagerMessage)
-
+		log.Printf("Alert value: %v", alertManagerMessage)
 		writeAlertLog(alertManagerMessage)
 
 		return c.SendString("Notification received")
