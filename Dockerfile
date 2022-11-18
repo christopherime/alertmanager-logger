@@ -9,7 +9,7 @@ COPY go.sum .
 
 RUN go mod download
 
-COPY *.go .
+COPY *.go /tmp/app
 
 RUN go build -o ./out/logger .
 
