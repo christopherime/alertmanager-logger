@@ -22,12 +22,12 @@ func init() {
 
 }
 
-func writeAlertLog(alertManagerMessage AlertManagerNotificationObject) {
-	log.Println("Alert received")
-	for _, alert := range alertManagerMessage.Alerts {
-		log.Println(alert.Labels.Alertname, alert.Labels.Instance, alert.Status)
-	}
-}
+// func writeAlertLog(alertManagerMessage AlertManagerNotificationObject) {
+// 	log.Println("Alert received")
+// 	for _, alert := range alertManagerMessage.Alerts {
+// 		log.Println(alert.Labels.Alertname, alert.Labels.Instance, alert.Status)
+// 	}
+// }
 
 func main() {
 
@@ -45,11 +45,14 @@ func main() {
 
 	app.Post("/logger", func(c *fiber.Ctx) error {
 
-		var alertManagerMessage AlertManagerNotificationObject
+		// var alertManagerMessage AlertManagerNotificationObject
 
-		c.BodyParser(&alertManagerMessage)
-		log.Printf("Alert value: %v", alertManagerMessage)
-		writeAlertLog(alertManagerMessage)
+		// c.BodyParser(&alertManagerMessage)
+		// log.Printf("Alert value: %v", alertManagerMessage)
+		// writeAlertLog(alertManagerMessage)
+
+		log.Println("Alert received")
+		log.Println(string(c.Body()))
 
 		return c.SendString("Notification received")
 	})
