@@ -10,14 +10,14 @@ import (
 func init() {
 	// check if the log directory exists
 	// if not, create it
-	if _, err := os.Stat("log"); os.IsNotExist(err) {
-		os.Mkdir("log", 0755)
+	if _, err := os.Stat("/var/log/amlogger"); os.IsNotExist(err) {
+		os.Mkdir("/var/log/amlogger", 0755)
 	}
 
 	// check if the log file exists
 	// if not, create it
-	if _, err := os.Stat("log/alerts.log"); os.IsNotExist(err) {
-		os.Create("log/alerts.log")
+	if _, err := os.Stat("/var/log/amlogger/alerts.log"); os.IsNotExist(err) {
+		os.Create("/var/log/amlogger/alerts.log")
 	}
 
 }
@@ -32,7 +32,7 @@ func writeAlertLog(alertManagerMessage AlertManagerNotificationObject) {
 func main() {
 
 	// defined default log file
-	f, err := os.OpenFile("log/alerts.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	f, err := os.OpenFile("/var/log/amlogger/alerts.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatalf("error opening file: %v", err)
 	}

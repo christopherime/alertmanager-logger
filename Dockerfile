@@ -1,22 +1,24 @@
-FROM golang:1.19-alpine AS build_base
+FROM golang:1.19-alpine AS builder
 
-RUN apk add --no-cache git
+ARG ARCH=amd64
 
-WORKDIR /tmp/app
+ENV GOROOT /usr/local/go
+ENV GOPATH /go
+ENV PATH $GOPATH/bin:$GOROOT/bin:$PATH
+ENV GO_VERSION 1.19
+ENV GO111MODULE on
+ENV CGO_ENABLED=0
 
-COPY go.mod .
-COPY go.sum .
+# Build dependencies
+WORKDIR /go/src/
+COPY . .
+RUN apk update && apk add make git
+RUN mkdir /go/src/build
+RUN go build -o build/amlogger
 
-RUN go mod download
-
-COPY *.go /tmp/app
-
-RUN go build -o ./out/logger .
-
-FROM alpine
-
-COPY --from=build_base /tmp/app/out/logger /app/logger
-
-EXPOSE 9095
-
-CMD ["/app/logger"]
+# Second stage
+FROM alpine:latest
+RUN mkdir /var/log/amlogger
+RUN chmod 667 /var/log/amlogger
+COPY --from=builder /go/src/build/amlogger /usr/local/bin/amlogger
+CMD ["/usr/local/bin/amlogger"]
