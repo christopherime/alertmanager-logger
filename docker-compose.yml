@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  alertmanager-logger:
+    image: ghcr.io/christopherime/alertmanager-logger:latest
+    container_name: alertmanager-logger
+    volumes:
+      - ./log/:/var/log/amlogger/
+    ports:
+      - 9095:9095
